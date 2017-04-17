@@ -9,6 +9,20 @@ elixir(function (mix) {
     ],'public/js/app.js');
 
     mix.scripts([
-        'controller/userController.js'
+        'controller/userController.js',
+        'controller/globalController.js',
+        'controller/navController.js',
+        'controller/galleryController.js'
     ],'public/js/controller.js');
+
+    mix.scripts([
+        'models/userModel.js',
+        'models/galleryModel.js'
+    ],'public/js/models.js');
+
+    mix.version([
+        'js/app.js',
+        'js/controller.js',
+        'js/models.js'
+    ])
 });

@@ -54,12 +54,15 @@ myApp.factory('galleryModel',['$http',function ($http) {
                 headers:{
                     'Content-Type':'application/json'
                 },
-                url:baseUrl+'gallery',
+                url: baseUrl + 'gallery',
                 method:"POST",
                 data:{
                     name:galleryData.name
                 }
             })
+        },
+        gatAllGalleries: function () {
+            return $http.get(baseUrl + 'gallery');
         }
     }
 }]);

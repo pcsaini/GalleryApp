@@ -1,25 +1,20 @@
 /**
  * Created by pcsaini on 16/4/17.
  */
-myApp.controller('userController',['$scope','$http', function ($scope,$http) {
+myApp.controller('userController',['$scope','userModel','$location', function ($scope,userModel,$location) {
+
     angular.extend($scope,{
-        doLogin:function (loginFrom) {
-            $http({
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                url:baseUrl+'auth',
-                method:"post",
-                data:{
-                    email:$scope.login.username,
-                    password: $scope.login.password
-                }
-            }).then(function (responces) {
-                console.log(responces.data);
-            },function (responces) {
-                console.log(responces);
-                alert(responces.data);
+        doLogin:function (loginForm) {
+            var data = {
+            	email:$scope.login.username,
+                password: $scope.login.password
+            };
+
+            userModel.doLogin(data).then(function mySuccess(){
+            	$location.path('/dashboard');
             });
-        }
+        },
+
+        
     });
 }]);

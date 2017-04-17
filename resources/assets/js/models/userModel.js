@@ -1,9 +1,9 @@
 /**
  * Created by pcsaini on 17/4/17.
  */
-myApp.factory('userModel',['$http', function ($http) {
+myApp.factory('userModel',['$http','$cookieStore', function ($http,$cookieStore) {
     var userModel = {};
-    userModel.doLogin: function(data){
+    userModel.doLogin = function(loginData){
         return $http({
             headers:{
                 'Content-Type':'application/json'
@@ -11,15 +11,36 @@ myApp.factory('userModel',['$http', function ($http) {
             url:baseUrl+'auth',
             method:"post",
             data:{
-                email:data.username,
-                password: data.password
+                email:loginData.email,
+                password: loginData.password
             }
-        }).then(function (responces) {
-            console.log(responces.data);
-        },function (responces) {
+        }).success(function (responces) {
             console.log(responces);
-            alert(responces.data);
-        });
-    }
+            $cookieStore.put('auth',JSON.stringify(responces));
+        }).error(function (data,state,header) {
+            console.log(data,state,header);
+            alert(data);
+        })
+    };
+
+    userModel.getAuthStatus = function () {
+        var status = $cookieStore.get('auth');
+        if (status){
+            return true;
+
+        }else{
+            return false;
+        }
+    };
+
+    userModel.getUserObject = function () {
+        var userObj = angular.fromJson($cookieStore.get('auth'));
+        return userObj;
+    };
+    
+    userModel.doUserLogout = function () {
+        $cookieStore.remove('auth');
+    };
+
     return userModel;
 }]);
