@@ -61,9 +61,16 @@ myApp.factory('galleryModel',['$http',function ($http) {
                 }
             })
         },
+
         gatAllGalleries: function () {
             return $http.get(baseUrl + 'gallery');
+        },
+
+        getGalleryById:function (id) {
+            return $http.get(baseUrl + 'gallery/' + id);
         }
+
+
     }
 }]);
 //# sourceMappingURL=models.js.map

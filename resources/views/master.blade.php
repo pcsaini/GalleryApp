@@ -4,7 +4,12 @@
 	<title>Gallery App</title>
 	<link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('css/app.css')}}">
-    <script>var baseUrl = "{{url('/')}}/";</script>
+    <link rel="stylesheet" type="text/css" href="{{asset('bower_components/dropzone/dist/basic.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('bower_components/dropzone/dist/dropzone.css')}}">
+    <script>
+        var baseUrl = "{{url('/')}}/";
+        var csrfToken = "{{ csrf_token() }}";
+    </script>
 </head>
 <body>
     <div ng-controller="globalController">
@@ -14,6 +19,7 @@
         </div>
     </div>
     <script type="text/javascript" src="{{asset('bower_components/jquery/dist/jquery.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('bower_components/dropzone/dist/dropzone.js')}}"></script>
 	<script type="text/javascript" src="{{asset('bower_components/angular/angular.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('bower_components/angular-route/angular-route.min.js')}}"></script>
 	<script type="text/javascript" src="{{asset('bower_components/angular-cookies/angular-cookies.min.js')}}"></script>

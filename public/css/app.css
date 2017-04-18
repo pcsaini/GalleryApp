@@ -1,3 +1,6 @@
 a.make-active {
     font-weight: bold !important;
 }
+.gallery-container{
+    cursor: pointer;
+}
