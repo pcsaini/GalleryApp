@@ -40,7 +40,8 @@ myApp.controller('galleryController',['$scope','$location','$timeout','$routePar
                         formData.append('_token',csrfToken);
                         formData.append('gallery_id',$routeParams.id);
                     },
-                    'success': function (response) {
+                    'success': function (file,response) {
+                        console.log(response);
                         $scope.singleGallery.images.push(response);
                         $scope.$emit('imageAdded',$scope.singleGallery);
                     }
