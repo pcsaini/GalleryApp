@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+
 use App\File;
 use App\Gallery;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +20,8 @@ class GalleryController extends Controller
     }
 
     public function show($id){
-        return Gallery::with('user')->where('id',$id)->first();
+        $galleryObj = new Gallery;
+        return $galleryObj->getSingleGallery($id);
     }
 
     public function store(Request $request){
@@ -38,7 +41,7 @@ class GalleryController extends Controller
     }
 
     public function uploadImage(Request $request){
-        $galleryId = $request->input('gallery_id');
+
 
         if (!$request->hasFile('file')){
             return response('No File Sent',400);
@@ -57,31 +60,38 @@ class GalleryController extends Controller
             return response('There are an Error in Form', 400);
         }
 
-        $mimeType = $request->file('file')->getClientMimeType();
-        $fileSize = $request->file('file')->getClientSize();
-        $fileName = 'gallery_'.$galleryId.'_'.uniqid().'.'.$request->file('file')->getClientOriginalExtension();
+        $fileObj =  new File();
 
 
-        if($request->file('file')->move(public_path().'/uploads/', $fileName)){
-            $file = File::create([
-                'file_name' => $fileName,
-                'mime_type' => $mimeType,
-                'file_size' => $fileSize,
-                'file_path' => 'uploads/'.$fileName,
-                'status' => 0
+        return $fileObj->uploadThumbAndMailImage($request);
+    }
+
+    public function deleteSingleImage(Request $request){
+        $imageId = $request->input('id');
+        $galleryId = $request->input('galleryId');
+
+
+
+        try{
+            DB::beginTransaction();
+
+            $file = File::findOrFail($imageId);
+            $file->delete();
+
+            DB::table('gallery_images')->where('file_id',$file->id)->delete();
+
+
+            Storage::delete([
+                'public/gallery_'.$galleryId.'/main/'.$file->file_name,
+                'public/gallery_'.$galleryId.'/thumb/'.$file->file_name,
+                'public/gallery_'.$galleryId.'/medium/'.$file->file_name
             ]);
 
-            DB::table('gallery_images')->insert([
-                'gallery_id'=>$galleryId,
-                'file_id' => $file->id
-            ]);
+            DB::commit();
 
-            $fileImg = File::find($file->id);
-            $fileImg->status = 1;
-            $fileImg->save();
-
+        }catch (\PDOException $e){
+            DB::rollBack();
         }
-
-        return response($file , 201);
+        return response($this->show($galleryId),200);
     }
 }

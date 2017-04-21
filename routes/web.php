@@ -20,6 +20,10 @@ Route::resource('user','UserController');
 Route::resource('gallery','GalleryController');
 
 Route::post('upload-file','GalleryController@uploadImage');
+Route::post('delete-single-image','GalleryController@deleteSingleImage');
+
 Route::get('test',function (){
-   return print_r(public_path());
+    echo "Delete";
+    Storage::delete('public/gallery_1/medium/58f90fab10bfb.jpeg');
+
 });

@@ -59,7 +59,7 @@ myApp.factory('galleryModel',['$http',function ($http) {
                 data:{
                     name:galleryData.name
                 }
-            })
+            });
         },
 
         gatAllGalleries: function () {
@@ -68,6 +68,20 @@ myApp.factory('galleryModel',['$http',function ($http) {
 
         getGalleryById:function (id) {
             return $http.get(baseUrl + 'gallery/' + id);
+        },
+
+        deleteSingleGallery:function (data) {
+            return $http({
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                url: baseUrl + 'delete-single-image',
+                method:"POST",
+                data:{
+                    id: data.imageId,
+                    galleryId: data.galleryId
+                }
+            })
         }
 
 

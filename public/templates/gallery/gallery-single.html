@@ -12,6 +12,16 @@
     </div>
 </div>
 
+
+<div class="row">
+    <div class="col-sm-3" ng-repeat="(key,value) in singleGallery.images">
+        <a ng-click="openLightboxModal($index)" class="thumbnail">
+            <img ng-src="{{value.thumbUrl}}">
+        </a>
+        <span><a ng-click="deleteImage(value.file_id)" style="cursor: pointer">Delete</a> </span>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-sm-12">
         <form action="/file-upload"

@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp',['ngRoute','ngCookies']);
+var myApp = angular.module('myApp',['ngRoute','ngCookies','ui.bootstrap','bootstrapLightbox']);
 myApp.config(['$routeProvider','$locationProvider',
     function ($routeProvider,$locationProvider) {
         $routeProvider.when('/',{
